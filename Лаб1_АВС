@@ -1,0 +1,57 @@
+#include <iostream>
+#include <string>
+#include <cmath>
+#include <stdexcept>
+
+int convertToDecimal(const std::string& number, int base) {
+    int decimalValue = 0;
+    int length = number.length();
+
+    for (int i = 0; i < length; ++i) {
+        char digit = number[length - 1 - i]; // Обратный порядок для вычисления
+        int value;
+
+        if (digit >= '0' && digit <= '9') {
+            value = digit - '0'; // Преобразуем символ в число
+        } else if (digit >= 'A' && digit <= 'F') {
+            value = digit - 'A' + 10; // Преобразуем символ в число (A-F)
+        } else if (digit >= 'a' && digit <= 'f') {
+            value = digit - 'a' + 10; // Преобразуем символ в число (a-f)
+        } else {
+            throw std::invalid_argument("Недопустимый символ в числе.");
+        }
+
+        if (value >= base) {
+            throw std::invalid_argument("Цифра " + std::string(1, digit) + " недопустима для системы счисления с основанием " + std::to_string(base) + ".");
+        }
+
+        decimalValue += value * std::pow(base, i);
+    }
+
+    return decimalValue;
+}
+
+int main() {
+    std::string number;
+    int base;
+
+    std::cout << "Введите число: ";
+    std::cin >> number;
+    std::cout << "Введите основание системы счисления (от 2 до 16): ";
+    std::cin >> base;
+
+    if (base < 2 || base > 16) {
+        std::cerr << "Основание системы счисления должно быть от 2 до 16." << std::endl;
+        return 1;
+    }
+
+    try {
+        int decimalValue = convertToDecimal(number, base);
+        std::cout << "Десятичное значение: " << decimalValue << std::endl;
+    } catch (const std::invalid_argument& e) {
+        std::cerr << "Ошибка: " << e.what() << std::endl;
+        return 1;
+    }
+
+    return 0;
+}
