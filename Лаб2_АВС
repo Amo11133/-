@@ -1,0 +1,37 @@
+#include <iostream>
+#include <cmath>
+
+void decimalToIEEE754(float number) {
+    // Получаем битовое представление числа с помощью указателя
+    unsigned int binaryRepresentation;
+    // Копируем содержимое float в unsigned int
+    binaryRepresentation = *reinterpret_cast<unsigned int*>(&number);
+
+    // Извлекаем знаковые бит, экспоненту и мантиссу
+    unsigned int sign = (binaryRepresentation >> 31) & 0x1;
+    unsigned int exponent = (binaryRepresentation >> 23) & 0xFF;
+    unsigned int mantissa = binaryRepresentation & 0x7FFFFF;
+
+    // Печатаем результат
+    std::cout << "Decimal number: " << number << std::endl;
+    std::cout << "IEEE 754 representation:" << std::endl;
+    std::cout << "Sign bit: " << sign << std::endl;
+    std::cout << "Exponent: " << exponent << " (biased: " << (exponent - 127) << ")" << std::endl;
+    std::cout << "Mantissa: " << mantissa << std::endl;
+
+    // Форматированный вывод в шестнадцатеричном виде
+    std::cout << "Hexadecimal representation: 0x" 
+              << std::hex << binaryRepresentation 
+              << std::dec << std::endl;
+}
+
+int main() {
+    float number;
+
+    std::cout << "Enter a decimal number: ";
+    std::cin >> number;
+
+    decimalToIEEE754(number);
+
+    return 0;
+}
