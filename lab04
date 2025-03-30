@@ -4,25 +4,21 @@
 
 using namespace std;
 
-// Функция для преобразования числа с плавающей точкой в двоичное представление
 string decimalToBinary(double num) {
     string binary = "";
 
-    // Целая часть
     int integerPart = (int)num;
     while (integerPart > 0) {
         binary = to_string(integerPart % 2) + binary;
         integerPart /= 2;
     }
 
-    // Если целая часть была 0, добавляем "0"
     if (binary.empty()) {
         binary = "0";
     }
 
     binary += ".";
 
-    // Дробная часть
     double fractionalPart = num - (int)num;
     for (int i = 0; i < 8; ++i) {  // Ограничим количество знаков
         fractionalPart *= 2;
@@ -34,7 +30,6 @@ string decimalToBinary(double num) {
     return binary;
 }
 
-// Функция для преобразования двоичного числа в десятичное
 double binaryToDecimal(string binary) {
     size_t pointPos = binary.find('.');
     string integerPart = binary.substr(0, pointPos);
@@ -42,7 +37,6 @@ double binaryToDecimal(string binary) {
 
     double result = 0;
 
-    // Целая часть
     int power = 0;
     for (int i = integerPart.size() - 1; i >= 0; --i) {
         if (integerPart[i] == '1') {
@@ -51,7 +45,6 @@ double binaryToDecimal(string binary) {
         ++power;
     }
 
-    // Дробная часть
     power = -1;
     for (size_t i = 0; i < fractionalPart.size(); ++i) {
         if (fractionalPart[i] == '1') {
@@ -63,7 +56,6 @@ double binaryToDecimal(string binary) {
     return result;
 }
 
-// Функция для преобразования шестнадцатеричного числа в десятичное
 unsigned int hexToDecimal(const string& hex) {
     unsigned int decimal = 0;
     for (size_t i = 0; i < hex.length(); ++i) {
@@ -78,7 +70,6 @@ unsigned int hexToDecimal(const string& hex) {
     return decimal;
 }
 
-// Функция для преобразования десятичного числа в шестнадцатеричное
 string decimalToHex(int decimal) {
     string hex = "";
     if (decimal == 0) {
@@ -97,7 +88,6 @@ string decimalToHex(int decimal) {
 }
 
 int main() {
-    // Заданные десятичные числа
     double a = 12.75;
     double b = 67.125;
     double c = 6.1;
@@ -107,14 +97,12 @@ int main() {
     double g = 10.25;
     double h = 25;
 
-    // Преобразование в двоичную систему
     cout << "12.75 in binary: " << decimalToBinary(a) << endl;
     cout << "67.125 in binary: " << decimalToBinary(b) << endl;
     cout << "6.1 in binary: " << decimalToBinary(c) << endl;
     cout << "7.55 in binary: " << decimalToBinary(d) << endl;
     cout << "9.125 in binary: " << decimalToBinary(e) << endl;
 
-    // Операции с десятичными числами
     double result1 = a + b;
     double result2 = c * d - e;
     double result3 = f - g + h;
@@ -123,7 +111,6 @@ int main() {
     cout << "6.1 * 7.55 - 9.125 = " << result2 << endl;
     cout << "90.15 - 10.25 + 25 = " << result3 << endl;
 
-    // Шестнадцатеричные числа
     string hex1 = "EEFA7";
     string hex2 = "ASA"; // Невалидное, но пусть будет
     string hex3 = "55A";
@@ -132,7 +119,6 @@ int main() {
     string hex6 = "20";
     string hex7 = "E2C";
 
-    // Преобразуем шестнадцатеричные числа в десятичные
     unsigned int dec1 = hexToDecimal(hex1);
     unsigned int dec2 = hexToDecimal(hex2);  // ASA невалидно
     unsigned int dec3 = hexToDecimal(hex3);
@@ -146,7 +132,6 @@ int main() {
     cout << "1F3 (hex) = " << dec5 << " (decimal)" << endl;
     cout << "20 (hex) = " << dec6 << " (decimal)" << endl;
 
-    // Арифметика с шестнадцатеричными числами
     double result4 = dec1 - dec2 * dec3; // Невалидное hex2
     double result5 = dec4 + dec5 * dec6 - dec7;
     cout << "EEFA7 - ASA * 55.A = " << result4 << endl;
