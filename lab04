@@ -1,107 +1,123 @@
 #include <iostream>
 #include <cmath>
-#include <string>
 
 using namespace std;
 
-string decimalToBinary(double num) {
-    string binary = "";
-
+void decimalToBinary(double num, char* binary) {
     int integerPart = (int)num;
+    int index = 0;
+
     while (integerPart > 0) {
-        binary = to_string(integerPart % 2) + binary;
+        binary[index++] = (integerPart % 2) + '0';
         integerPart /= 2;
     }
-
-    if (binary.empty()) {
-        binary = "0";
+    
+    for (int i = 0; i < index / 2; ++i) {
+        char temp = binary[i];
+        binary[i] = binary[index - i - 1];
+        binary[index - i - 1] = temp;
     }
 
-    binary += ".";
+    if (index == 0) {
+        binary[index++] = '0';
+    }
+
+    binary[index++] = '.';
 
     double fractionalPart = num - (int)num;
-    for (int i = 0; i < 8; ++i) {  // Ограничим количество знаков
+    for (int i = 0; i < 8; ++i) {
         fractionalPart *= 2;
         int digit = (int)fractionalPart;
-        binary += to_string(digit);
+        binary[index++] = digit + '0';
         fractionalPart -= digit;
     }
-
-    return binary;
+    binary[index] = '\0';
 }
 
-double binaryToDecimal(string binary) {
-    size_t pointPos = binary.find('.');
-    string integerPart = binary.substr(0, pointPos);
-    string fractionalPart = binary.substr(pointPos + 1);
-
+double binaryToDecimal(const char* binary) {
     double result = 0;
-
     int power = 0;
-    for (int i = integerPart.size() - 1; i >= 0; --i) {
-        if (integerPart[i] == '1') {
+
+    // Convert the integer part
+    int i = 0;
+    while (binary[i] != '.' && binary[i] != '\0') {
+        if (binary[i] == '1') {
             result += pow(2, power);
         }
         ++power;
+        ++i;
     }
 
     power = -1;
-    for (size_t i = 0; i < fractionalPart.size(); ++i) {
-        if (fractionalPart[i] == '1') {
+    ++i; // Skip the dot
+    while (binary[i] != '\0') {
+        if (binary[i] == '1') {
             result += pow(2, power);
         }
         --power;
+        ++i;
     }
 
     return result;
 }
 
-unsigned int hexToDecimal(const string& hex) {
+unsigned int hexToDecimal(const char* hex) {
     unsigned int decimal = 0;
-    for (size_t i = 0; i < hex.length(); ++i) {
-        char c = hex[i];
+    int i = 0;
+    while (hex[i] != '\0') {
         decimal *= 16;
+        char c = hex[i];
         if (c >= '0' && c <= '9') {
             decimal += c - '0';
         } else if (c >= 'A' && c <= 'F') {
             decimal += c - 'A' + 10;
         }
+        ++i;
     }
     return decimal;
 }
 
-string decimalToHex(int decimal) {
-    string hex = "";
+void decimalToHex(int decimal, char* hex) {
+    int index = 0;
     if (decimal == 0) {
-        hex = "0";
+        hex[index++] = '0';
     }
     while (decimal > 0) {
         int rem = decimal % 16;
         if (rem < 10) {
-            hex = char(rem + '0') + hex;
+            hex[index++] = rem + '0';
         } else {
-            hex = char(rem - 10 + 'A') + hex;
+            hex[index++] = rem - 10 + 'A';
         }
         decimal /= 16;
     }
-    return hex;
+    hex[index] = '\0';
+
+    for (int i = 0; i < index / 2; ++i) {
+        char temp = hex[i];
+        hex[i] = hex[index - i - 1];
+        hex[index - i - 1] = temp;
+    }
 }
 
 int main() {
-    double a = 12.75;
-    double b = 67.125;
-    double c = 6.1;
-    double d = 7.55;
-    double e = 9.125;
-    double f = 90.15;
-    double g = 10.25;
-    double h = 25;
+    double a = 12.75, b = 67.125, c = 6.1, d = 7.55, e = 9.125, f = 90.15, g = 10.25, h = 25;
+    
+    char binary[64];
+    decimalToBinary(a, binary);
+    cout << "12.75 in binary: " << binary << endl;
 
-    cout << "12.75 in binary: " << decimalToBinary(a) << endl;
-    cout << "67.125 in binary: " << decimalToBinary(b) << endl;
-    cout << "6.1 in binary: " << decimalToBinary(c) << endl;
-    cout << "7.55 in binary: " << decimalToBinary(d) << endl;
-    cout << "9.125 in binary: " << decimalToBinary(e) << endl;
+    decimalToBinary(b, binary);
+    cout << "67.125 in binary: " << binary << endl;
+
+    decimalToBinary(c, binary);
+    cout << "6.1 in binary: " << binary << endl;
+
+    decimalToBinary(d, binary);
+    cout << "7.55 in binary: " << binary << endl;
+
+    decimalToBinary(e, binary);
+    cout << "9.125 in binary: " << binary << endl;
 
     double result1 = a + b;
     double result2 = c * d - e;
@@ -111,16 +127,16 @@ int main() {
     cout << "6.1 * 7.55 - 9.125 = " << result2 << endl;
     cout << "90.15 - 10.25 + 25 = " << result3 << endl;
 
-    string hex1 = "EEFA7";
-    string hex2 = "ASA"; // Невалидное, но пусть будет
-    string hex3 = "55A";
-    string hex4 = "DA13";
-    string hex5 = "1F3";
-    string hex6 = "20";
-    string hex7 = "E2C";
+    const char* hex1 = "EEFA7";
+    const char* hex2 = "ASA"; 
+    const char* hex3 = "55A";
+    const char* hex4 = "DA13";
+    const char* hex5 = "1F3";
+    const char* hex6 = "20";
+    const char* hex7 = "E2C";
 
     unsigned int dec1 = hexToDecimal(hex1);
-    unsigned int dec2 = hexToDecimal(hex2);  // ASA невалидно
+    unsigned int dec2 = hexToDecimal(hex2);  
     unsigned int dec3 = hexToDecimal(hex3);
     unsigned int dec4 = hexToDecimal(hex4);
     unsigned int dec5 = hexToDecimal(hex5);
@@ -132,7 +148,7 @@ int main() {
     cout << "1F3 (hex) = " << dec5 << " (decimal)" << endl;
     cout << "20 (hex) = " << dec6 << " (decimal)" << endl;
 
-    double result4 = dec1 - dec2 * dec3; // Невалидное hex2
+    double result4 = dec1 - dec2 * dec3; // Invalid hex2
     double result5 = dec4 + dec5 * dec6 - dec7;
     cout << "EEFA7 - ASA * 55.A = " << result4 << endl;
     cout << "DA13 + 1F3 * 20 - E2.C = " << result5 << endl;
