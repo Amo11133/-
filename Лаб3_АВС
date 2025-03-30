@@ -1,0 +1,51 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+int main() {
+    // 1. AA56 + 1A52 (система счисления 16)
+    int hex1 = 0xAA56;   // AA56 в 16-й системе
+    int hex2 = 0x1A52;   // 1A52 в 16-й системе
+    int sum_hex = hex1 + hex2;
+
+    // 2. 2426(8) - 2134(8) (система счисления 8)
+    int oct1 = 0, oct2 = 0;
+    string octal1 = "2426";
+    string octal2 = "2134";
+
+    // Преобразуем из 8-й системы в 10-ую
+    for (int i = 0; i < octal1.length(); i++) {
+        oct1 += (octal1[i] - '0') * pow(8, octal1.length() - 1 - i);
+        oct2 += (octal2[i] - '0') * pow(8, octal2.length() - 1 - i);
+    }
+    int diff_oct = oct1 - oct2;
+
+    // 3. 2556(8) - 2551(8) (система счисления 8)
+    string octal3 = "2556";
+    string octal4 = "2551";
+    int oct3 = 0, oct4 = 0;
+
+    // Преобразуем из 8-й системы в 10-ую
+    for (int i = 0; i < octal3.length(); i++) {
+        oct3 += (octal3[i] - '0') * pow(8, octal3.length() - 1 - i);
+        oct4 += (octal4[i] - '0') * pow(8, octal4.length() - 1 - i);
+    }
+    int diff_oct2 = oct3 - oct4;
+
+    // 4. 23457(10) - 7332(10) (система счисления 10)
+    int dec1 = 23457;
+    int dec2 = 7332;
+    int diff_dec = dec1 - dec2;
+
+    // 5. 160(10) / 8(10) (система счисления 10)
+    int div = 160 / 8;
+
+    // Вывод результата
+    cout << "1. AA56 + 1A52 (16) = " << sum_hex << " (в 10-й системе)" << endl;
+    cout << "2. 2426(8) - 2134(8) = " << diff_oct << " (в 10-й системе)" << endl;
+    cout << "3. 2556(8) - 2551(8) = " << diff_oct2 << " (в 10-й системе)" << endl;
+    cout << "4. 23457(10) - 7332(10) = " << diff_dec << endl;
+    cout << "5. 160(10) / 8(10) = " << div << endl;
+
+    return 0;
+}
