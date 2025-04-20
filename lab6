@@ -1,0 +1,62 @@
+#include <iostream>
+using namespace std;
+
+int function1(int x1, int x2, int x3, int x4) {
+    int index = (x1 << 3) | (x2 << 2) | (x3 << 1) | x4;
+    int values[16] = {1,1,1,0,1,0,0,1,1,0,0,1,0,1,1,1};
+    return values[index];
+}
+
+int function2(int x1, int x2, int x3, int x4) {
+    int index = (x1 << 3) | (x2 << 2) | (x3 << 1) | x4;
+    int values[16] = {1,1,0,1,0,1,1,0,1,0,1,0,0,0,1,1};
+    return values[index];
+}
+
+int function3(int x1, int x2, int x3, int x4) {
+    int index = (x1 << 3) | (x2 << 2) | (x3 << 1) | x4;
+    int values[16] = {1,1,0,1,1,0,0,1,0,1,1,0,1,0,1,1};
+    return values[index];
+}
+
+int function4(int x1, int x2, int x3, int x4) {
+    int index = (x1 << 3) | (x2 << 2) | (x3 << 1) | x4;
+    int values[16] = {1,1,0,0,0,0,1,1,0,0,1,1,1,1,0,0};
+    return values[index];
+}
+
+int function5(int x1, int x2, int x3, int x4) {
+    int index = (x1 << 3) | (x2 << 2) | (x3 << 1) | x4;
+    int values[16] = {1,0,1,1,1,1,0,0,1,1,0,0,0,0,1,1};
+    return values[index];
+}
+
+int function6(int x1, int x2, int x3, int x4) {
+    int index = (x1 << 3) | (x2 << 2) | (x3 << 1) | x4;
+    int values[16] = {1,0,1,1,0,1,0,1,1,1,0,1,0,0,1,0};
+    return values[index];
+}
+
+int main() {
+    cout << "x1 x2 x3 x4 | F1 F2 F3 F4 F5 F6\n";
+    cout << "-----------------------------\n";
+
+    for (int x1 = 0; x1 <= 1; x1++) {
+        for (int x2 = 0; x2 <= 1; x2++) {
+            for (int x3 = 0; x3 <= 1; x3++) {
+                for (int x4 = 0; x4 <= 1; x4++) {
+                    int f1 = function1(x1, x2, x3, x4);
+                    int f2 = function2(x1, x2, x3, x4);
+                    int f3 = function3(x1, x2, x3, x4);
+                    int f4 = function4(x1, x2, x3, x4);
+                    int f5 = function5(x1, x2, x3, x4);
+                    int f6 = function6(x1, x2, x3, x4);
+                    cout << x1 << "  " << x2 << "  " << x3 << "  " << x4 << "  |  "
+                         << f1 << "  " << f2 << "  " << f3 << "  "
+                         << f4 << "  " << f5 << "  " << f6 << endl;
+                }
+            }
+        }
+    }
+    return 0;
+}
